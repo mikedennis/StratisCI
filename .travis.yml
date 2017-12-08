@@ -5,7 +5,7 @@ matrix:
   include:
     - os: linux # Ubuntu 14.04
       dist: trusty
-      sudo: required      
+      sudo: false
     - os: osx # OSX 10.12
       osx_image: xcode9      
 
