@@ -11,7 +11,7 @@ for testProject in *.Tests; do
 
 # only run integration and nbitcoin tests
 #if [[ "$testProject" != *"Integration.Tests"* ]] && [[ "$testProject" != *"IntegrationTests"* ]] && [[ "$testProject" != *"NBitcoin.Tests"* ]] ; then
-if [[ "$testProject" != *"Integration.Tests"* ]] ; then
+if [[ "$testProject" != *"Integration.Tests"* ]] && [[ "$testProject" != *"IntegrationTests"* ]]; then
     continue
 fi
 
