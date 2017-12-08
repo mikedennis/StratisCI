@@ -3,9 +3,9 @@ mono: none
 dotnet: 2.0.0
 matrix:
   include:
-    - os: linux # Ubuntu 14.04
-      dist: precise
-      sudo: false
+#    - os: linux # Ubuntu 14.04
+#      dist: trusty
+#      sudo: false
     - os: osx # OSX 10.12
       osx_image: xcode9      
 
