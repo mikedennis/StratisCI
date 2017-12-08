@@ -2,7 +2,7 @@
 dotnet --info
 echo STARTED dotnet build
 cd StratisBitcoinFullNode/src
-dotnet build -c Release ${path} -v m
+dotnet build -c Debug ${path} -v m
 
 echo STARTED dotnet test
 
@@ -10,7 +10,7 @@ ANYFAILURES=false
 
 echo "Running Integration Tests.."; 
 cd Stratis.Bitcoin.IntegrationTests
-COMMAND="dotnet test --no-build -c Release -v m"
+COMMAND="dotnet test --no-build -c Debug -v m"
 $COMMAND
 EXITCODE=$?
 echo exit code for $testProject: $EXITCODE
