@@ -7,16 +7,9 @@ dotnet build -c Release ${path} -v m
 echo STARTED dotnet test
 
 ANYFAILURES=false
-for testProject in *.Tests; do
 
-# only run integration and nbitcoin tests
-#if [[ "$testProject" != *"Integration.Tests"* ]] && [[ "$testProject" != *"IntegrationTests"* ]] && [[ "$testProject" != *"NBitcoin.Tests"* ]] ; then
-if [[ "$testProject" != *"Integration.Tests"* ]] && [[ "$testProject" != *"IntegrationTests"* ]]; then
-    continue
-fi
-
-echo "Processing $testProject file.."; 
-cd $testProject
+echo "Running Integration Tests.."; 
+cd Stratis.Bitcoin.IntegrationTests
 COMMAND="dotnet test --no-build -c Release -v m"
 $COMMAND
 EXITCODE=$?
