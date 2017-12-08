@@ -25,6 +25,5 @@ before_install:
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then ulimit -n 1024; fi
 
 script:
-  - cd StratisBitcoinFullNode
   - chmod +x build.sh
   - ./build.sh
