@@ -35,7 +35,7 @@ init:
 
 before_build:
 - ps: |
-      git submodule update --recursive --init
+      git submodule update --init --recursive
       if ($LastExitCode -ne 0) { $host.SetShouldExit($LastExitCode) }
 
 #---------------------------------#
