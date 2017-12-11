@@ -36,7 +36,9 @@ init:
 before_build:
 - ps: |
       git submodule update -q --init --recursive
-      git submodule update -q --remote
+      cd StratisBitcoinFullNode
+      git submodule update --remote 
+      cd ..     
       if ($LastExitCode -ne 0) { $host.SetShouldExit($LastExitCode) }
 
 #---------------------------------#
