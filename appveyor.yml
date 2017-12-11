@@ -51,7 +51,7 @@ after_build:
 test_script:
 - ps: |
       Write-Host "STARTED dotnet test" -foregroundcolor "magenta"
-      cd $env:APPVEYOR_BUILD_FOLDER/StratisCI/StratisBitcoinFullNode/src
+      cd $env:APPVEYOR_BUILD_FOLDER/StratisBitcoinFullNode/src
       
       $anyFailures = $FALSE;
       Push-Location 'Stratis.Bitcoin.IntegrationTests'
