@@ -34,8 +34,7 @@ init:
 - ps: dotnet --info
 
 before_build:
-- ps: | 
-  git submodule update --recursive --init
+- ps: git submodule update --recursive --init
 
 #---------------------------------#
 #       build configuration       #
