@@ -38,12 +38,15 @@ init:
 #---------------------------------#
 build_script:
 - ps: |
-      git submodule --init --recursive
-      cd StratisBitcoinFullNode/src
-      Write-Host "STARTED dotnet build" -foregroundcolor "magenta"
-      dotnet build -c -v m 
-      Write-Host "FINISHED dotnet build" -foregroundcolor "magenta"
-      if ($LastExitCode -ne 0) { $host.SetShouldExit($LastExitCode)  }
+      if($env:configuration -eq 'Debug')
+      {
+        git submodule --init --recursive
+        cd StratisBitcoinFullNode/src
+        Write-Host "STARTED dotnet build" -foregroundcolor "magenta"
+        dotnet build -c -v m 
+        Write-Host "FINISHED dotnet build" -foregroundcolor "magenta"
+        if ($LastExitCode -ne 0) { $host.SetShouldExit($LastExitCode)  }
+      }
 
 # scripts to run after build
 after_build:
@@ -51,20 +54,23 @@ after_build:
     
 test_script:
 - ps: |
-      Write-Host "STARTED dotnet test" -foregroundcolor "magenta"
-      cd $env:APPVEYOR_BUILD_FOLDER/StratisBitcoinFullNode/src
-      
-      $anyFailures = $FALSE;
-      Push-Location 'Stratis.Bitcoin.IntegrationTests'
-      dotnet test -c --no-build
-      if ($LastExitCode -ne 0) { 
-        $anyFailures = $TRUE
-        Add-AppveyorMessage -Message "Some tests failed in IntegrationTests."
-      }
-      Pop-Location
+      if($env:configuration -eq 'Debug')
+      {
+        Write-Host "STARTED dotnet test" -foregroundcolor "magenta"
+        cd $env:APPVEYOR_BUILD_FOLDER/StratisBitcoinFullNode/src
+        
+        $anyFailures = $FALSE;
+        Push-Location 'Stratis.Bitcoin.IntegrationTests'
+        dotnet test -c --no-build
+        if ($LastExitCode -ne 0) { 
+          $anyFailures = $TRUE
+          Add-AppveyorMessage -Message "Some tests failed in IntegrationTests."
+        }
+        Pop-Location
 
-      Write-Host "FINISHED dotnet test" -foregroundcolor "magenta"
-      if ($anyFailures -eq $TRUE) { $host.SetShouldExit(1) }
+        Write-Host "FINISHED dotnet test" -foregroundcolor "magenta"
+        if ($anyFailures -eq $TRUE) { $host.SetShouldExit(1) }
+      }
 
 #---------------------------------#
 #      artifacts configuration    #
