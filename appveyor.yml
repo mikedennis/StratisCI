@@ -34,7 +34,9 @@ init:
 - ps: dotnet --info
 
 before_build:
-- ps: git submodule update --recursive --init
+- ps: |
+      git submodule update --recursive --init
+      if ($LastExitCode -ne 0) { $host.SetShouldExit($LastExitCode) }
 
 #---------------------------------#
 #       build configuration       #
