@@ -8,13 +8,6 @@ pull_requests:
   do_not_increment_build_number: true
 skip_tags: true
 
-
-# branches to build 
-branches:
-  # whitelist
-  only:
-    - master
-
 #---------------------------------#
 #    environment configuration    #
 #---------------------------------#
