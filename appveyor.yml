@@ -43,7 +43,7 @@ build_script:
         git submodule update --recursive --init
         cd StratisBitcoinFullNode/src
         Write-Host "STARTED dotnet build" -foregroundcolor "magenta"
-        dotnet build -c -v m 
+        dotnet build -c $env:configuration -v m 
         Write-Host "FINISHED dotnet build" -foregroundcolor "magenta"
         if ($LastExitCode -ne 0) { $host.SetShouldExit($LastExitCode)  }
       }
@@ -61,7 +61,7 @@ test_script:
         
         $anyFailures = $FALSE;
         Push-Location 'Stratis.Bitcoin.IntegrationTests'
-        dotnet test -c --no-build
+        dotnet test -c $env:configuration --no-build
         if ($LastExitCode -ne 0) { 
           $anyFailures = $TRUE
           Add-AppveyorMessage -Message "Some tests failed in IntegrationTests."
