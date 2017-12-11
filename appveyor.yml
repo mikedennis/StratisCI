@@ -33,8 +33,9 @@ cache:
 init:
 - ps: dotnet --info
 
-beforebuild:
-- ps: git submodule update --recursive --init
+before_build:
+- ps: | 
+  git submodule update --recursive --init
 
 #---------------------------------#
 #       build configuration       #
