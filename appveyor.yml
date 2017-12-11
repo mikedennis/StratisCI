@@ -40,7 +40,7 @@ build_script:
 - ps: |
       if($env:configuration -eq 'Debug')
       {
-        git submodule init --recursive
+        git submodule init
         cd StratisBitcoinFullNode/src
         Write-Host "STARTED dotnet build" -foregroundcolor "magenta"
         dotnet build -c -v m 
