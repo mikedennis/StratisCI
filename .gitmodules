@@ -1,4 +1,0 @@
-[submodule "StratisBitcoinFullNode"]
-	path = StratisBitcoinFullNode
-	url = https://github.com/mikedennis/StratisBitcoinFullNode.git
-	branch = skiplist-enum
