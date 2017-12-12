@@ -16,8 +16,8 @@ image: Visual Studio 2017
 clone_folder: c:\projects\fullnode
 
 configuration:
-- Debug
-- Release
+- Integration
+- NBitcoin
 
 # build cache to preserve files/folders between builds
 cache:
@@ -36,14 +36,12 @@ before_build:
 #---------------------------------#
 build_script:
 - ps: |
-      if($env:configuration -eq 'Debug')
-      {
-        cd StratisBitcoinFullNode/src
-        Write-Host "STARTED dotnet build" -foregroundcolor "magenta"
-        dotnet build -c $env:configuration -v m 
-        Write-Host "FINISHED dotnet build" -foregroundcolor "magenta"
-        if ($LastExitCode -ne 0) { $host.SetShouldExit($LastExitCode)  }
-      }
+      cd StratisBitcoinFullNode/src
+      Write-Host "STARTED dotnet build" -foregroundcolor "magenta"
+      dotnet build -c Debug -v m 
+      Write-Host "FINISHED dotnet build" -foregroundcolor "magenta"
+      if ($LastExitCode -ne 0) { $host.SetShouldExit($LastExitCode)  }
+
 
 # scripts to run after build
 after_build:
@@ -51,31 +49,35 @@ after_build:
     
 test_script:
 - ps: |
-      if($env:configuration -eq 'Debug')
+      Write-Host "STARTED dotnet test" -foregroundcolor "magenta"
+      cd $env:APPVEYOR_BUILD_FOLDER/StratisBitcoinFullNode/src    
+      $anyFailures = $FALSE;
+
+      if($env:configuration -eq 'Integration')
       {
-        Write-Host "STARTED dotnet test" -foregroundcolor "magenta"
-        cd $env:APPVEYOR_BUILD_FOLDER/StratisBitcoinFullNode/src
-        
-        $anyFailures = $FALSE;
         Push-Location 'Stratis.Bitcoin.IntegrationTests'
-        dotnet test -c $env:configuration --no-build
+        dotnet test -c Debug --no-build
         if ($LastExitCode -ne 0) { 
           $anyFailures = $TRUE
           Add-AppveyorMessage -Message "Some tests failed in IntegrationTests."
         }
         Pop-Location
+      }
 
+      if($env:configuration -eq 'NBitcoin')
+      {
         Push-Location 'NBitcoin.Tests'
-        dotnet test -c $env:configuration --no-build
+        dotnet test -c Debug --no-build
         if ($LastExitCode -ne 0) { 
           $anyFailures = $TRUE
           Add-AppveyorMessage -Message "Some tests failed in NBitcoin.Tests."
         }
         Pop-Location
-
-        Write-Host "FINISHED dotnet test" -foregroundcolor "magenta"
-        if ($anyFailures -eq $TRUE) { $host.SetShouldExit(1) }
       }
+
+      Write-Host "FINISHED dotnet test" -foregroundcolor "magenta"
+      if ($anyFailures -eq $TRUE) { $host.SetShouldExit(1) }
+
 
 #---------------------------------#
 #      artifacts configuration    #
