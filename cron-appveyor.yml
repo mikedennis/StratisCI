@@ -1,0 +1,94 @@
+#  reference: https://www.appveyor.com/docs/appveyor-yml/
+
+# you can use {branch} name in version format too
+# version: 1.0.{build}-{branch}
+
+version: 1.0.2.{build}
+pull_requests:
+  do_not_increment_build_number: true
+skip_tags: true
+
+#---------------------------------#
+#    environment configuration    #
+#---------------------------------#
+
+image: Visual Studio 2017
+clone_folder: c:\projects\fullnode
+
+branches:
+  # whitelist
+  only:
+    - master
+
+configuration:
+- Integration
+- NBitcoin
+
+# build cache to preserve files/folders between builds
+cache:
+  - '%USERPROFILE%\.nuget\packages'
+  
+init:
+- ps: dotnet --info
+
+before_build:
+- ps: |
+      git clone -q --branch=master https://github.com/stratisproject/StratisBitcoinFullNode.git
+      if ($LastExitCode -ne 0) { $host.SetShouldExit($LastExitCode) }
+
+#---------------------------------#
+#       build configuration       #
+#---------------------------------#
+build_script:
+- ps: |
+      cd StratisBitcoinFullNode/src
+      Write-Host "STARTED dotnet build" -foregroundcolor "magenta"
+      #dotnet build -c Debug -v m 
+      Write-Host "FINISHED dotnet build" -foregroundcolor "magenta"
+      if ($LastExitCode -ne 0) { $host.SetShouldExit($LastExitCode)  }
+
+
+# scripts to run after build
+after_build:
+- ps: |
+    
+test_script:
+- ps: |
+      Write-Host "STARTED dotnet test" -foregroundcolor "magenta"
+      cd $env:APPVEYOR_BUILD_FOLDER/StratisBitcoinFullNode/src    
+      $anyFailures = $FALSE;
+
+      if($env:configuration -eq 'Integration')
+      {
+        Push-Location 'Stratis.Bitcoin.IntegrationTests'
+        dotnet test -c Debug
+        if ($LastExitCode -ne 0) { 
+          $anyFailures = $TRUE
+          Add-AppveyorMessage -Message "Some tests failed in IntegrationTests."
+        }
+        Pop-Location
+      }
+
+      if($env:configuration -eq 'NBitcoin')
+      {
+        Push-Location 'NBitcoin.Tests'
+        dotnet test -c Debug
+        if ($LastExitCode -ne 0) { 
+          $anyFailures = $TRUE
+          Add-AppveyorMessage -Message "Some tests failed in NBitcoin.Tests."
+        }
+        Pop-Location
+      }
+
+      Write-Host "FINISHED dotnet test" -foregroundcolor "magenta"
+      if ($anyFailures -eq $TRUE) { $host.SetShouldExit(1) }
+
+
+#---------------------------------#
+#      artifacts configuration    #
+#---------------------------------#
+
+# pushing all files in build directory recursively
+artifacts:
+- path: nuget\*.nupkg
+  name: nuget packages
