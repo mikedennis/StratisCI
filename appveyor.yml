@@ -38,7 +38,7 @@ build_script:
 - ps: |
       cd StratisBitcoinFullNode/src
       Write-Host "STARTED dotnet build" -foregroundcolor "magenta"
-      dotnet build -c Debug -v m 
+      #dotnet build -c Debug -v m 
       Write-Host "FINISHED dotnet build" -foregroundcolor "magenta"
       if ($LastExitCode -ne 0) { $host.SetShouldExit($LastExitCode)  }
 
@@ -56,7 +56,7 @@ test_script:
       if($env:configuration -eq 'Integration')
       {
         Push-Location 'Stratis.Bitcoin.IntegrationTests'
-        dotnet test -c Debug --no-build
+        dotnet test -c Debug
         if ($LastExitCode -ne 0) { 
           $anyFailures = $TRUE
           Add-AppveyorMessage -Message "Some tests failed in IntegrationTests."
@@ -67,7 +67,7 @@ test_script:
       if($env:configuration -eq 'NBitcoin')
       {
         Push-Location 'NBitcoin.Tests'
-        dotnet test -c Debug --no-build
+        dotnet test -c Debug
         if ($LastExitCode -ne 0) { 
           $anyFailures = $TRUE
           Add-AppveyorMessage -Message "Some tests failed in NBitcoin.Tests."
