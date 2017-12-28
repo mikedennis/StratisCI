@@ -16,7 +16,7 @@ image: Visual Studio 2017
 clone_folder: c:\projects\fullnode
 
 configuration:
-- Integration
+- Integration 
 - NBitcoin
 
 # build cache to preserve files/folders between builds
