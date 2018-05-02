@@ -28,7 +28,7 @@ init:
 
 before_build:
 - ps: |
-      git clone -q --branch=nbitcoin-mrg4 https://github.com/mikedennis/StratisBitcoinFullNode.git
+      git clone -q --branch=nbitcoin-mrg1 https://github.com/mikedennis/StratisBitcoinFullNode.git
       if ($LastExitCode -ne 0) { $host.SetShouldExit($LastExitCode) }
 
 #---------------------------------#
