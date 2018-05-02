@@ -8,9 +8,9 @@ pull_requests:
   do_not_increment_build_number: true
 skip_tags: true
 
-#---------------------------------#
-#    environment configuration    #
-#---------------------------------#
+#--------------------------------#
+#    environment configuration   #
+#--------------------------------#
 
 image: Visual Studio 2017
 clone_folder: c:\projects\fullnode
