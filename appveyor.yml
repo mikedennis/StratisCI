@@ -1,7 +1,7 @@
 #  reference: https://www.appveyor.com/docs/appveyor-yml/
 
 # you can use {branch} name in version format too
-# version: 1.0.{build}-{branch}
+# version: 1.0.{build}-{branch} 
 
 version: 1.0.2.{build}
 pull_requests:
@@ -38,7 +38,7 @@ build_script:
 - ps: |
       cd StratisBitcoinFullNode/src
       Write-Host "STARTED dotnet build" -foregroundcolor "magenta"
-      #dotnet build -c Debug -v m 
+      dotnet build -c Debug -v m 
       Write-Host "FINISHED dotnet build" -foregroundcolor "magenta"
       if ($LastExitCode -ne 0) { $host.SetShouldExit($LastExitCode)  }
 
